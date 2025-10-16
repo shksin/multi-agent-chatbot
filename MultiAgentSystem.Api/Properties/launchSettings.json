@@ -1,0 +1,22 @@
+{
+  "profiles": {
+    "MultiAgentSystem.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "api-docs",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:58550;http://localhost:58551"
+    },
+    "MultiAgentSystem.Api (Swagger)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "api-docs",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:58550;http://localhost:58551"
+    }
+  }
+}

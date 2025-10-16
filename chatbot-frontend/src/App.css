@@ -1,0 +1,436 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.App {
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* Navigation Header */
+.nav-header {
+  background: #000;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #333;
+}
+
+.nav-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.logo-icon {
+  color: #e53e3e;
+  font-size: 2rem;
+}
+
+.logo-text {
+  color: #fff;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-item {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.75rem 0;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-item.active {
+  border-bottom-color: #e53e3e;
+  color: #fff;
+}
+
+.nav-item:hover {
+  color: #ccc;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.internet-banking-btn {
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.internet-banking-btn:hover {
+  background: #357abd;
+}
+
+.login-btn {
+  background: #e53e3e;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background: #c53030;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-name {
+  color: #fff;
+  font-weight: 500;
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-logout {
+  background: #e53e3e;
+  color: white;
+}
+
+.btn-logout:hover {
+  background: #c53030;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60%;
+  height: 100%;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%234a90e2;stop-opacity:0.3" /><stop offset="100%" style="stop-color:%23e53e3e;stop-opacity:0.3" /></linearGradient></defs><polygon fill="url(%23grad)" points="0,0 1000,0 1000,1000 300,1000" /></svg>') no-repeat;
+  background-size: cover;
+  opacity: 0.6;
+}
+
+.hero-content {
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-card {
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  padding: 3rem;
+  border-radius: 12px;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.hero-card h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 300;
+}
+
+.hero-card p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+.explore-btn {
+  background: #e53e3e;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.explore-btn:hover {
+  background: #c53030;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(229, 62, 62, 0.4);
+}
+
+/* Banking Solutions */
+.banking-solutions {
+  background: #fff;
+  color: #333;
+  padding: 4rem 0;
+}
+
+.solutions-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.banking-solutions h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  font-weight: 400;
+}
+
+.banking-solutions > p {
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  color: #666;
+  max-width: 800px;
+}
+
+.solutions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.solution-category {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 8px;
+  border-left: 4px solid #e53e3e;
+}
+
+.solution-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.solution-category h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.solution-category ul {
+  list-style: none;
+}
+
+.solution-category li {
+  margin-bottom: 0.75rem;
+}
+
+.solution-category a {
+  color: #333;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.solution-category a:hover {
+  color: #e53e3e;
+  text-decoration: underline;
+}
+
+/* Chatbot Widget */
+.chatbot-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.chatbot-trigger {
+  background: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  max-width: 300px;
+}
+
+.chatbot-trigger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+}
+
+.chatbot-trigger-avatar {
+  width: 40px;
+  height: 40px;
+  background: #e53e3e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.chatbot-trigger-text {
+  flex: 1;
+}
+
+.chatbot-trigger-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.chatbot-trigger-message {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.chatbot-trigger-dots {
+  color: #999;
+  font-size: 1.2rem;
+}
+
+.chatbot-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  width: 380px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chatbot-header {
+  background: #fff;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chatbot-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.chatbot-avatar {
+  width: 35px;
+  height: 35px;
+  background: #e53e3e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.chatbot-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.chatbot-status {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.chatbot-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #999;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.chatbot-close:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.chatbot-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-content {
+    padding: 0 1rem;
+  }
+  
+  .nav-menu {
+    display: none;
+  }
+  
+  .hero-card {
+    padding: 2rem;
+    margin: 0 1rem;
+  }
+  
+  .hero-card h1 {
+    font-size: 2rem;
+  }
+  
+  .solutions-container {
+    padding: 0 1rem;
+  }
+  
+  .chatbot-container {
+    width: calc(100vw - 40px);
+    max-width: 380px;
+  }
+}
