@@ -4,18 +4,18 @@ using Azure.Search.Documents.Models;
 
 namespace MultiAgentSystem.Api.Agents;
 
-public interface IRagAgent
+public interface IAISearchAgent
 {
     Task<string> QueryAsync(string query, CancellationToken cancellationToken = default);
 }
 
-public class RagAgent : IRagAgent
+public class AISearchAgent : IAISearchAgent
 {
     private readonly IConfiguration _configuration;
-    private readonly ILogger<RagAgent> _logger;
+    private readonly ILogger<AISearchAgent> _logger;
     private SearchClient? _searchClient;
 
-    public RagAgent(IConfiguration configuration, ILogger<RagAgent> logger)
+    public AISearchAgent(IConfiguration configuration, ILogger<AISearchAgent> logger)
     {
         _configuration = configuration;
         _logger = logger;
@@ -48,7 +48,7 @@ public class RagAgent : IRagAgent
 
     public async Task<string> QueryAsync(string query, CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("RAG Agent processing query: {Query}", query);
+        _logger.LogInformation("AI Search Agent processing query: {Query}", query);
 
         try
         {
@@ -90,7 +90,7 @@ public class RagAgent : IRagAgent
                 return "No relevant information found in the knowledge base for your query.";
             }
 
-            return $"**RAG Agent Results:**\n\nFound {results.Count} relevant documents:\n\n" + 
+            return $"**AI Search Agent Results:**\n\nFound {results.Count} relevant documents:\n\n" + 
                    string.Join("\n\n---\n\n", results);
         }
         catch (Exception ex)
@@ -106,7 +106,7 @@ public class RagAgent : IRagAgent
 
         var dummyResponses = new Dictionary<string, string>
         {
-            ["product"] = @"**RAG Agent Results:**
+            ["product"] = @"**AI Search Agent Results:**
 
 Found 3 relevant documents from knowledge base:
 
@@ -123,7 +123,7 @@ Key features include: multi-tenant architecture, 99.9% uptime SLA, automated sca
 **Product Pricing** (Category: Pricing)
 Flexible pricing tiers available: Starter ($99/month), Professional ($299/month), and Enterprise (custom pricing). All plans include core features with varying limits.",
 
-            ["support"] = @"**RAG Agent Results:**
+            ["support"] = @"**AI Search Agent Results:**
 
 Found 2 relevant documents from knowledge base:
 
@@ -135,7 +135,7 @@ We provide comprehensive support including email, chat, and phone support. Enter
 **Support Hours** (Category: Support)
 Our support team is available 24/7 for critical issues. Standard support hours are Monday-Friday, 9 AM - 6 PM EST.",
 
-            ["default"] = @"**RAG Agent Results:**
+            ["default"] = @"**AI Search Agent Results:**
 
 Found 2 relevant documents from knowledge base:
 

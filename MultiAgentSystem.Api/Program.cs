@@ -48,9 +48,9 @@ builder.Services.AddAuthentication(options =>
 
 // Register services
 builder.Services.AddSingleton<IAuthService, AuthService>();
-builder.Services.AddSingleton<IRagAgent, RagAgent>();
+builder.Services.AddSingleton<IAISearchAgent, AISearchAgent>();
 builder.Services.AddSingleton<IUserAgent, UserAgent>();
-builder.Services.AddSingleton<ICustomRAGAgent, CustomRAGAgent>();
+builder.Services.AddSingleton<IBingCustomSearchAgent, BingCustomSearchAgent>();
 builder.Services.AddSingleton<IOrchestratorAgent, OrchestratorAgent>();
 
 var app = builder.Build();

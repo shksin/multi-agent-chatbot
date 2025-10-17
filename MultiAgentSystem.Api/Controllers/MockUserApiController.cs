@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using MultiAgentSystem.Api.Models;
 
 namespace MultiAgentSystem.Api.Controllers;
 
@@ -142,537 +143,537 @@ public class MockUserApiController : ControllerBase
         }
     }
 
-    private object GetMockUserProfile(string userName)
+    private ProfileResponse GetMockUserProfile(string userName)
     {
-        var profiles = new Dictionary<string, object>
+        var profiles = new Dictionary<string, ProfileResponse>
         {
-            ["admin"] = new
+            ["admin"] = new ProfileResponse
             {
-                customerId = "CUST001",
-                firstName = "Sarah",
-                lastName = "Johnson",
-                email = "sarah.johnson@email.com",
-                phone = "+1-555-0123",
-                address = new
+                CustomerId = "CUST001",
+                FirstName = "Sarah",
+                LastName = "Johnson",
+                Email = "sarah.johnson@email.com",
+                Phone = "+1-555-0123",
+                Address = new AddressInfo
                 {
-                    street = "123 Main Street",
-                    city = "New York",
-                    state = "NY",
-                    zipCode = "10001",
-                    country = "USA"
+                    Street = "123 Main Street",
+                    City = "New York",
+                    State = "NY",
+                    ZipCode = "10001",
+                    Country = "USA"
                 },
-                dateOfBirth = "1985-03-15",
-                memberSince = "2018-06-20",
-                customerType = "Premier",
-                relationshipManager = "Michael Chen",
-                preferredBranch = "Manhattan Downtown",
-                lastLogin = DateTime.UtcNow.AddHours(-2)
+                DateOfBirth = "1985-03-15",
+                MemberSince = "2018-06-20",
+                CustomerType = "Premier",
+                RelationshipManager = "Michael Chen",
+                PreferredBranch = "Manhattan Downtown",
+                LastLogin = DateTime.UtcNow.AddHours(-2)
             },
-            ["user1"] = new
+            ["user1"] = new ProfileResponse
             {
-                customerId = "CUST002",
-                firstName = "John",
-                lastName = "Doe",
-                email = "john.doe@email.com",
-                phone = "+1-555-0456",
-                address = new
+                CustomerId = "CUST002",
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@email.com",
+                Phone = "+1-555-0456",
+                Address = new AddressInfo
                 {
-                    street = "456 Oak Avenue",
-                    city = "Chicago",
-                    state = "IL",
-                    zipCode = "60601",
-                    country = "USA"
+                    Street = "456 Oak Avenue",
+                    City = "Chicago",
+                    State = "IL",
+                    ZipCode = "60601",
+                    Country = "USA"
                 },
-                dateOfBirth = "1990-07-22",
-                memberSince = "2020-01-15",
-                customerType = "Standard",
-                relationshipManager = "Lisa Rodriguez",
-                preferredBranch = "Chicago Loop",
-                lastLogin = DateTime.UtcNow.AddHours(-5)
+                DateOfBirth = "1990-07-22",
+                MemberSince = "2020-01-15",
+                CustomerType = "Standard",
+                RelationshipManager = "Lisa Rodriguez",
+                PreferredBranch = "Chicago Loop",
+                LastLogin = DateTime.UtcNow.AddHours(-5)
             },
-            ["demo"] = new
+            ["demo"] = new ProfileResponse
             {
-                customerId = "CUST999",
-                firstName = "Demo",
-                lastName = "User",
-                email = "demo@smartbanking.com",
-                phone = "+1-555-DEMO",
-                address = new
+                CustomerId = "CUST999",
+                FirstName = "Demo",
+                LastName = "User",
+                Email = "demo@smartbanking.com",
+                Phone = "+1-555-DEMO",
+                Address = new AddressInfo
                 {
-                    street = "999 Demo Street",
-                    city = "Demo City",
-                    state = "DC",
-                    zipCode = "00000",
-                    country = "USA"
+                    Street = "999 Demo Street",
+                    City = "Demo City",
+                    State = "DC",
+                    ZipCode = "00000",
+                    Country = "USA"
                 },
-                dateOfBirth = "1995-01-01",
-                memberSince = "2024-01-01",
-                customerType = "Trial",
-                relationshipManager = "Demo Manager",
-                preferredBranch = "Demo Branch",
-                lastLogin = DateTime.UtcNow.AddMinutes(-30)
+                DateOfBirth = "1995-01-01",
+                MemberSince = "2024-01-01",
+                CustomerType = "Trial",
+                RelationshipManager = "Demo Manager",
+                PreferredBranch = "Demo Branch",
+                LastLogin = DateTime.UtcNow.AddMinutes(-30)
             }
         };
 
         return profiles.GetValueOrDefault(userName, profiles["demo"]);
     }
 
-    private object GetMockBankAccounts(string userName)
+    private AccountsResponse GetMockBankAccounts(string userName)
     {
-        var accountsData = new Dictionary<string, object[]>
+        var accountsData = new Dictionary<string, AccountInfo[]>
         {
-            ["admin"] = new object[]
+            ["admin"] = new AccountInfo[]
             {
-                new
+                new AccountInfo
                 {
-                    accountId = "ACC001",
-                    accountNumber = "****1234",
-                    accountType = "Checking",
-                    accountName = "Premier Checking",
-                    balance = 15750.85m,
-                    currency = "USD",
-                    status = "Active",
-                    openedDate = "2018-06-20",
-                    interestRate = 0.25m
+                    AccountId = "ACC001",
+                    AccountNumber = "****1234",
+                    AccountType = "Checking",
+                    AccountName = "Premier Checking",
+                    Balance = 15750.85m,
+                    Currency = "USD",
+                    Status = "Active",
+                    OpenedDate = "2018-06-20",
+                    InterestRate = 0.25m
                 },
-                new
+                new AccountInfo
                 {
-                    accountId = "ACC002",
-                    accountNumber = "****5678",
-                    accountType = "Savings",
-                    accountName = "High Yield Savings",
-                    balance = 45200.50m,
-                    currency = "USD",
-                    status = "Active",
-                    openedDate = "2018-08-15",
-                    interestRate = 2.15m
+                    AccountId = "ACC002",
+                    AccountNumber = "****5678",
+                    AccountType = "Savings",
+                    AccountName = "High Yield Savings",
+                    Balance = 45200.50m,
+                    Currency = "USD",
+                    Status = "Active",
+                    OpenedDate = "2018-08-15",
+                    InterestRate = 2.15m
                 },
-                new
+                new AccountInfo
                 {
-                    accountId = "ACC003",
-                    accountNumber = "****9012",
-                    accountType = "Investment",
-                    accountName = "Investment Portfolio",
-                    balance = 125800.75m,
-                    currency = "USD",
-                    status = "Active",
-                    openedDate = "2019-02-10",
-                    interestRate = 0.0m
+                    AccountId = "ACC003",
+                    AccountNumber = "****9012",
+                    AccountType = "Investment",
+                    AccountName = "Investment Portfolio",
+                    Balance = 125800.75m,
+                    Currency = "USD",
+                    Status = "Active",
+                    OpenedDate = "2019-02-10",
+                    InterestRate = 0.0m
                 }
             },
-            ["user1"] = new object[]
+            ["user1"] = new AccountInfo[]
             {
-                new
+                new AccountInfo
                 {
-                    accountId = "ACC004",
-                    accountNumber = "****3456",
-                    accountType = "Checking",
-                    accountName = "Standard Checking",
-                    balance = 3250.40m,
-                    currency = "USD",
-                    status = "Active",
-                    openedDate = "2020-01-15",
-                    interestRate = 0.05m
+                    AccountId = "ACC004",
+                    AccountNumber = "****3456",
+                    AccountType = "Checking",
+                    AccountName = "Standard Checking",
+                    Balance = 3250.40m,
+                    Currency = "USD",
+                    Status = "Active",
+                    OpenedDate = "2020-01-15",
+                    InterestRate = 0.05m
                 },
-                new
+                new AccountInfo
                 {
-                    accountId = "ACC005",
-                    accountNumber = "****7890",
-                    accountType = "Savings",
-                    accountName = "Regular Savings",
-                    balance = 8750.25m,
-                    currency = "USD",
-                    status = "Active",
-                    openedDate = "2020-03-20",
-                    interestRate = 1.25m
+                    AccountId = "ACC005",
+                    AccountNumber = "****7890",
+                    AccountType = "Savings",
+                    AccountName = "Regular Savings",
+                    Balance = 8750.25m,
+                    Currency = "USD",
+                    Status = "Active",
+                    OpenedDate = "2020-03-20",
+                    InterestRate = 1.25m
                 }
             },
-            ["demo"] = new object[]
+            ["demo"] = new AccountInfo[]
             {
-                new
+                new AccountInfo
                 {
-                    accountId = "DEMO001",
-                    accountNumber = "****0000",
-                    accountType = "Checking",
-                    accountName = "Demo Checking",
-                    balance = 1000.00m,
-                    currency = "USD",
-                    status = "Active",
-                    openedDate = "2024-01-01",
-                    interestRate = 0.01m
+                    AccountId = "DEMO001",
+                    AccountNumber = "****0000",
+                    AccountType = "Checking",
+                    AccountName = "Demo Checking",
+                    Balance = 1000.00m,
+                    Currency = "USD",
+                    Status = "Active",
+                    OpenedDate = "2024-01-01",
+                    InterestRate = 0.01m
                 }
             }
         };
 
-        return new { accounts = accountsData.GetValueOrDefault(userName, accountsData["demo"]) };
+        return new AccountsResponse { Accounts = accountsData.GetValueOrDefault(userName, accountsData["demo"]) };
     }
 
-    private object GetMockTransactions(string userName, int limit)
+    private TransactionsResponse GetMockTransactions(string userName, int limit)
     {
-        var transactionsData = new Dictionary<string, object[]>
+        var transactionsData = new Dictionary<string, TransactionInfo[]>
         {
-            ["admin"] = new object[]
+            ["admin"] = new TransactionInfo[]
             {
-                new
+                new TransactionInfo
                 {
-                    transactionId = "TXN001",
-                    date = DateTime.UtcNow.AddDays(-1),
-                    description = "Salary Deposit",
-                    amount = 5500.00m,
-                    type = "Credit",
-                    category = "Income",
-                    accountNumber = "****1234",
-                    balance = 15750.85m
+                    TransactionId = "TXN001",
+                    Date = DateTime.UtcNow.AddDays(-1),
+                    Description = "Salary Deposit",
+                    Amount = 5500.00m,
+                    Type = "Credit",
+                    Category = "Income",
+                    AccountNumber = "****1234",
+                    Balance = 15750.85m
                 },
-                new
+                new TransactionInfo
                 {
-                    transactionId = "TXN002",
-                    date = DateTime.UtcNow.AddDays(-2),
-                    description = "Mortgage Payment",
-                    amount = -2200.00m,
-                    type = "Debit",
-                    category = "Housing",
-                    accountNumber = "****1234",
-                    balance = 10250.85m
+                    TransactionId = "TXN002",
+                    Date = DateTime.UtcNow.AddDays(-2),
+                    Description = "Mortgage Payment",
+                    Amount = -2200.00m,
+                    Type = "Debit",
+                    Category = "Housing",
+                    AccountNumber = "****1234",
+                    Balance = 10250.85m
                 },
-                new
+                new TransactionInfo
                 {
-                    transactionId = "TXN003",
-                    date = DateTime.UtcNow.AddDays(-3),
-                    description = "Grocery Store",
-                    amount = -145.67m,
-                    type = "Debit",
-                    category = "Food",
-                    accountNumber = "****1234",
-                    balance = 12450.85m
+                    TransactionId = "TXN003",
+                    Date = DateTime.UtcNow.AddDays(-3),
+                    Description = "Grocery Store",
+                    Amount = -145.67m,
+                    Type = "Debit",
+                    Category = "Food",
+                    AccountNumber = "****1234",
+                    Balance = 12450.85m
                 },
-                new
+                new TransactionInfo
                 {
-                    transactionId = "TXN004",
-                    date = DateTime.UtcNow.AddDays(-4),
-                    description = "Investment Transfer",
-                    amount = 1000.00m,
-                    type = "Credit",
-                    category = "Investment",
-                    accountNumber = "****9012",
-                    balance = 124800.75m
+                    TransactionId = "TXN004",
+                    Date = DateTime.UtcNow.AddDays(-4),
+                    Description = "Investment Transfer",
+                    Amount = 1000.00m,
+                    Type = "Credit",
+                    Category = "Investment",
+                    AccountNumber = "****9012",
+                    Balance = 124800.75m
                 },
-                new
+                new TransactionInfo
                 {
-                    transactionId = "TXN005",
-                    date = DateTime.UtcNow.AddDays(-5),
-                    description = "Gas Station",
-                    amount = -65.23m,
-                    type = "Debit",
-                    category = "Transportation",
-                    accountNumber = "****1234",
-                    balance = 12596.52m
+                    TransactionId = "TXN005",
+                    Date = DateTime.UtcNow.AddDays(-5),
+                    Description = "Gas Station",
+                    Amount = -65.23m,
+                    Type = "Debit",
+                    Category = "Transportation",
+                    AccountNumber = "****1234",
+                    Balance = 12596.52m
                 }
             },
-            ["user1"] = new object[]
+            ["user1"] = new TransactionInfo[]
             {
-                new
+                new TransactionInfo
                 {
-                    transactionId = "TXN006",
-                    date = DateTime.UtcNow.AddDays(-1),
-                    description = "Paycheck Direct Deposit",
-                    amount = 2800.00m,
-                    type = "Credit",
-                    category = "Income",
-                    accountNumber = "****3456",
-                    balance = 3250.40m
+                    TransactionId = "TXN006",
+                    Date = DateTime.UtcNow.AddDays(-1),
+                    Description = "Paycheck Direct Deposit",
+                    Amount = 2800.00m,
+                    Type = "Credit",
+                    Category = "Income",
+                    AccountNumber = "****3456",
+                    Balance = 3250.40m
                 },
-                new
+                new TransactionInfo
                 {
-                    transactionId = "TXN007",
-                    date = DateTime.UtcNow.AddDays(-2),
-                    description = "Rent Payment",
-                    amount = -1200.00m,
-                    type = "Debit",
-                    category = "Housing",
-                    accountNumber = "****3456",
-                    balance = 450.40m
+                    TransactionId = "TXN007",
+                    Date = DateTime.UtcNow.AddDays(-2),
+                    Description = "Rent Payment",
+                    Amount = -1200.00m,
+                    Type = "Debit",
+                    Category = "Housing",
+                    AccountNumber = "****3456",
+                    Balance = 450.40m
                 },
-                new
+                new TransactionInfo
                 {
-                    transactionId = "TXN008",
-                    date = DateTime.UtcNow.AddDays(-3),
-                    description = "Coffee Shop",
-                    amount = -4.75m,
-                    type = "Debit",
-                    category = "Food",
-                    accountNumber = "****3456",
-                    balance = 1650.40m
+                    TransactionId = "TXN008",
+                    Date = DateTime.UtcNow.AddDays(-3),
+                    Description = "Coffee Shop",
+                    Amount = -4.75m,
+                    Type = "Debit",
+                    Category = "Food",
+                    AccountNumber = "****3456",
+                    Balance = 1650.40m
                 }
             },
-            ["demo"] = new object[]
+            ["demo"] = new TransactionInfo[]
             {
-                new
+                new TransactionInfo
                 {
-                    transactionId = "DEMO_TXN001",
-                    date = DateTime.UtcNow.AddHours(-2),
-                    description = "Demo Transaction",
-                    amount = 100.00m,
-                    type = "Credit",
-                    category = "Demo",
-                    accountNumber = "****0000",
-                    balance = 1000.00m
+                    TransactionId = "DEMO_TXN001",
+                    Date = DateTime.UtcNow.AddHours(-2),
+                    Description = "Demo Transaction",
+                    Amount = 100.00m,
+                    Type = "Credit",
+                    Category = "Demo",
+                    AccountNumber = "****0000",
+                    Balance = 1000.00m
                 },
-                new
+                new TransactionInfo
                 {
-                    transactionId = "DEMO_TXN002",
-                    date = DateTime.UtcNow.AddHours(-4),
-                    description = "Sample Purchase",
-                    amount = -25.50m,
-                    type = "Debit",
-                    category = "Demo",
-                    accountNumber = "****0000",
-                    balance = 900.00m
+                    TransactionId = "DEMO_TXN002",
+                    Date = DateTime.UtcNow.AddHours(-4),
+                    Description = "Sample Purchase",
+                    Amount = -25.50m,
+                    Type = "Debit",
+                    Category = "Demo",
+                    AccountNumber = "****0000",
+                    Balance = 900.00m
                 }
             }
         };
 
         var transactions = transactionsData.GetValueOrDefault(userName, transactionsData["demo"]);
-        return new { transactions = transactions.Take(limit).ToArray() };
+        return new TransactionsResponse { Transactions = transactions.Take(limit).ToArray() };
     }
 
-    private object GetMockCards(string userName)
+    private CardsResponse GetMockCards(string userName)
     {
-        var cardsData = new Dictionary<string, object[]>
+        var cardsData = new Dictionary<string, CardInfo[]>
         {
-            ["admin"] = new object[]
+            ["admin"] = new CardInfo[]
             {
-                new
+                new CardInfo
                 {
-                    cardId = "CARD001",
-                    cardNumber = "****1234",
-                    cardType = "Credit",
-                    cardName = "Premium Rewards Card",
-                    creditLimit = 15000.00m,
-                    availableCredit = 12750.50m,
-                    currentBalance = 2249.50m,
-                    status = "Active",
-                    expiryDate = "12/2028",
-                    rewardsPoints = 12580
+                    CardId = "CARD001",
+                    CardNumber = "****1234",
+                    CardType = "Credit",
+                    CardName = "Premium Rewards Card",
+                    CreditLimit = 15000.00m,
+                    AvailableCredit = 12750.50m,
+                    CurrentBalance = 2249.50m,
+                    Status = "Active",
+                    ExpiryDate = "12/2028",
+                    RewardsPoints = 12580
                 },
-                new
+                new CardInfo
                 {
-                    cardId = "CARD002",
-                    cardNumber = "****5678",
-                    cardType = "Debit",
-                    cardName = "Premier Debit Card",
-                    creditLimit = 0.00m,
-                    availableCredit = 0.00m,
-                    currentBalance = 0.00m,
-                    status = "Active",
-                    expiryDate = "09/2027",
-                    rewardsPoints = 0
+                    CardId = "CARD002",
+                    CardNumber = "****5678",
+                    CardType = "Debit",
+                    CardName = "Premier Debit Card",
+                    CreditLimit = 0.00m,
+                    AvailableCredit = 0.00m,
+                    CurrentBalance = 0.00m,
+                    Status = "Active",
+                    ExpiryDate = "09/2027",
+                    RewardsPoints = 0
                 }
             },
-            ["user1"] = new object[]
+            ["user1"] = new CardInfo[]
             {
-                new
+                new CardInfo
                 {
-                    cardId = "CARD003",
-                    cardNumber = "****9012",
-                    cardType = "Credit",
-                    cardName = "Standard Credit Card",
-                    creditLimit = 5000.00m,
-                    availableCredit = 4250.75m,
-                    currentBalance = 749.25m,
-                    status = "Active",
-                    expiryDate = "08/2027",
-                    rewardsPoints = 2340
+                    CardId = "CARD003",
+                    CardNumber = "****9012",
+                    CardType = "Credit",
+                    CardName = "Standard Credit Card",
+                    CreditLimit = 5000.00m,
+                    AvailableCredit = 4250.75m,
+                    CurrentBalance = 749.25m,
+                    Status = "Active",
+                    ExpiryDate = "08/2027",
+                    RewardsPoints = 2340
                 },
-                new
+                new CardInfo
                 {
-                    cardId = "CARD004",
-                    cardNumber = "****3456",
-                    cardType = "Debit",
-                    cardName = "Standard Debit Card",
-                    creditLimit = 0.00m,
-                    availableCredit = 0.00m,
-                    currentBalance = 0.00m,
-                    status = "Active",
-                    expiryDate = "06/2026",
-                    rewardsPoints = 0
+                    CardId = "CARD004",
+                    CardNumber = "****3456",
+                    CardType = "Debit",
+                    CardName = "Standard Debit Card",
+                    CreditLimit = 0.00m,
+                    AvailableCredit = 0.00m,
+                    CurrentBalance = 0.00m,
+                    Status = "Active",
+                    ExpiryDate = "06/2026",
+                    RewardsPoints = 0
                 }
             },
-            ["demo"] = new object[]
+            ["demo"] = new CardInfo[]
             {
-                new
+                new CardInfo
                 {
-                    cardId = "DEMO_CARD001",
-                    cardNumber = "****0000",
-                    cardType = "Debit",
-                    cardName = "Demo Debit Card",
-                    creditLimit = 0.00m,
-                    availableCredit = 0.00m,
-                    currentBalance = 0.00m,
-                    status = "Active",
-                    expiryDate = "12/2025",
-                    rewardsPoints = 0
+                    CardId = "DEMO_CARD001",
+                    CardNumber = "****0000",
+                    CardType = "Debit",
+                    CardName = "Demo Debit Card",
+                    CreditLimit = 0.00m,
+                    AvailableCredit = 0.00m,
+                    CurrentBalance = 0.00m,
+                    Status = "Active",
+                    ExpiryDate = "12/2025",
+                    RewardsPoints = 0
                 }
             }
         };
 
-        return new { cards = cardsData.GetValueOrDefault(userName, cardsData["demo"]) };
+        return new CardsResponse { Cards = cardsData.GetValueOrDefault(userName, cardsData["demo"]) };
     }
 
-    private object GetMockLoans(string userName)
+    private LoansResponse GetMockLoans(string userName)
     {
-        var loansData = new Dictionary<string, object[]>
+        var loansData = new Dictionary<string, LoanInfo[]>
         {
-            ["admin"] = new object[]
+            ["admin"] = new LoanInfo[]
             {
-                new
+                new LoanInfo
                 {
-                    loanId = "LOAN001",
-                    loanType = "Mortgage",
-                    loanNumber = "****HOME123",
-                    originalAmount = 450000.00m,
-                    currentBalance = 385200.50m,
-                    interestRate = 3.25m,
-                    monthlyPayment = 2200.00m,
-                    nextPaymentDate = DateTime.UtcNow.AddDays(15),
-                    status = "Active",
-                    termMonths = 360,
-                    remainingMonths = 285
+                    LoanId = "LOAN001",
+                    LoanType = "Mortgage",
+                    LoanNumber = "****HOME123",
+                    OriginalAmount = 450000.00m,
+                    CurrentBalance = 385200.50m,
+                    InterestRate = 3.25m,
+                    MonthlyPayment = 2200.00m,
+                    NextPaymentDate = DateTime.UtcNow.AddDays(15),
+                    Status = "Active",
+                    TermMonths = 360,
+                    RemainingMonths = 285
                 },
-                new
+                new LoanInfo
                 {
-                    loanId = "LOAN002",
-                    loanType = "Auto",
-                    loanNumber = "****AUTO456",
-                    originalAmount = 35000.00m,
-                    currentBalance = 18750.25m,
-                    interestRate = 4.5m,
-                    monthlyPayment = 650.00m,
-                    nextPaymentDate = DateTime.UtcNow.AddDays(12),
-                    status = "Active",
-                    termMonths = 60,
-                    remainingMonths = 32
+                    LoanId = "LOAN002",
+                    LoanType = "Auto",
+                    LoanNumber = "****AUTO456",
+                    OriginalAmount = 35000.00m,
+                    CurrentBalance = 18750.25m,
+                    InterestRate = 4.5m,
+                    MonthlyPayment = 650.00m,
+                    NextPaymentDate = DateTime.UtcNow.AddDays(12),
+                    Status = "Active",
+                    TermMonths = 60,
+                    RemainingMonths = 32
                 }
             },
-            ["user1"] = new object[]
+            ["user1"] = new LoanInfo[]
             {
-                new
+                new LoanInfo
                 {
-                    loanId = "LOAN003",
-                    loanType = "Personal",
-                    loanNumber = "****PERS789",
-                    originalAmount = 15000.00m,
-                    currentBalance = 8950.75m,
-                    interestRate = 8.25m,
-                    monthlyPayment = 350.00m,
-                    nextPaymentDate = DateTime.UtcNow.AddDays(20),
-                    status = "Active",
-                    termMonths = 48,
-                    remainingMonths = 28
+                    LoanId = "LOAN003",
+                    LoanType = "Personal",
+                    LoanNumber = "****PERS789",
+                    OriginalAmount = 15000.00m,
+                    CurrentBalance = 8950.75m,
+                    InterestRate = 8.25m,
+                    MonthlyPayment = 350.00m,
+                    NextPaymentDate = DateTime.UtcNow.AddDays(20),
+                    Status = "Active",
+                    TermMonths = 48,
+                    RemainingMonths = 28
                 }
             },
-            ["demo"] = new object[]
+            ["demo"] = new LoanInfo[]
             {
-                new
+                new LoanInfo
                 {
-                    loanId = "DEMO_LOAN001",
-                    loanType = "Personal",
-                    loanNumber = "****DEMO000",
-                    originalAmount = 5000.00m,
-                    currentBalance = 2500.00m,
-                    interestRate = 10.0m,
-                    monthlyPayment = 150.00m,
-                    nextPaymentDate = DateTime.UtcNow.AddDays(10),
-                    status = "Active",
-                    termMonths = 36,
-                    remainingMonths = 18
+                    LoanId = "DEMO_LOAN001",
+                    LoanType = "Personal",
+                    LoanNumber = "****DEMO000",
+                    OriginalAmount = 5000.00m,
+                    CurrentBalance = 2500.00m,
+                    InterestRate = 10.0m,
+                    MonthlyPayment = 150.00m,
+                    NextPaymentDate = DateTime.UtcNow.AddDays(10),
+                    Status = "Active",
+                    TermMonths = 36,
+                    RemainingMonths = 18
                 }
             }
         };
 
-        return new { loans = loansData.GetValueOrDefault(userName, loansData["demo"]) };
+        return new LoansResponse { Loans = loansData.GetValueOrDefault(userName, loansData["demo"]) };
     }
 
-    private object GetMockInvestments(string userName)
+    private InvestmentsResponse GetMockInvestments(string userName)
     {
-        var investmentsData = new Dictionary<string, object[]>
+        var investmentsData = new Dictionary<string, InvestmentInfo[]>
         {
-            ["admin"] = new object[]
+            ["admin"] = new InvestmentInfo[]
             {
-                new
+                new InvestmentInfo
                 {
-                    investmentId = "INV001",
-                    accountNumber = "****INV123",
-                    portfolioName = "Growth Portfolio",
-                    totalValue = 125800.75m,
-                    totalInvested = 98500.00m,
-                    totalGain = 27300.75m,
-                    gainPercentage = 27.71m,
-                    lastUpdated = DateTime.UtcNow.AddMinutes(-15),
-                    holdings = new[]
+                    InvestmentId = "INV001",
+                    AccountNumber = "****INV123",
+                    PortfolioName = "Growth Portfolio",
+                    TotalValue = 125800.75m,
+                    TotalInvested = 98500.00m,
+                    TotalGain = 27300.75m,
+                    GainPercentage = 27.71m,
+                    LastUpdated = DateTime.UtcNow.AddMinutes(-15),
+                    Holdings = new[]
                     {
-                        new { symbol = "AAPL", name = "Apple Inc.", shares = 50, currentPrice = 175.25m, value = 8761.25m },
-                        new { symbol = "GOOGL", name = "Alphabet Inc.", shares = 25, currentPrice = 142.50m, value = 3562.50m },
-                        new { symbol = "MSFT", name = "Microsoft Corp.", shares = 75, currentPrice = 415.75m, value = 31181.25m },
-                        new { symbol = "TSLA", name = "Tesla Inc.", shares = 30, currentPrice = 245.80m, value = 7374.00m }
+                        new HoldingInfo { Symbol = "AAPL", Name = "Apple Inc.", Shares = 50, CurrentPrice = 175.25m, Value = 8761.25m },
+                        new HoldingInfo { Symbol = "GOOGL", Name = "Alphabet Inc.", Shares = 25, CurrentPrice = 142.50m, Value = 3562.50m },
+                        new HoldingInfo { Symbol = "MSFT", Name = "Microsoft Corp.", Shares = 75, CurrentPrice = 415.75m, Value = 31181.25m },
+                        new HoldingInfo { Symbol = "TSLA", Name = "Tesla Inc.", Shares = 30, CurrentPrice = 245.80m, Value = 7374.00m }
                     }
                 },
-                new
+                new InvestmentInfo
                 {
-                    investmentId = "INV002",
-                    accountNumber = "****401K456",
-                    portfolioName = "401(k) Retirement",
-                    totalValue = 89450.50m,
-                    totalInvested = 75200.00m,
-                    totalGain = 14250.50m,
-                    gainPercentage = 18.95m,
-                    lastUpdated = DateTime.UtcNow.AddMinutes(-15),
-                    holdings = new[]
+                    InvestmentId = "INV002",
+                    AccountNumber = "****401K456",
+                    PortfolioName = "401(k) Retirement",
+                    TotalValue = 89450.50m,
+                    TotalInvested = 75200.00m,
+                    TotalGain = 14250.50m,
+                    GainPercentage = 18.95m,
+                    LastUpdated = DateTime.UtcNow.AddMinutes(-15),
+                    Holdings = new[]
                     {
-                        new { symbol = "VTIAX", name = "Vanguard Total International", shares = 500, currentPrice = 28.75m, value = 14375.00m },
-                        new { symbol = "VTSAX", name = "Vanguard Total Stock Market", shares = 650, currentPrice = 115.50m, value = 75075.50m }
+                        new HoldingInfo { Symbol = "VTIAX", Name = "Vanguard Total International", Shares = 500, CurrentPrice = 28.75m, Value = 14375.00m },
+                        new HoldingInfo { Symbol = "VTSAX", Name = "Vanguard Total Stock Market", Shares = 650, CurrentPrice = 115.50m, Value = 75075.50m }
                     }
                 }
             },
-            ["user1"] = new object[]
+            ["user1"] = new InvestmentInfo[]
             {
-                new
+                new InvestmentInfo
                 {
-                    investmentId = "INV003",
-                    accountNumber = "****INV789",
-                    portfolioName = "Starter Portfolio",
-                    totalValue = 12750.25m,
-                    totalInvested = 10500.00m,
-                    totalGain = 2250.25m,
-                    gainPercentage = 21.43m,
-                    lastUpdated = DateTime.UtcNow.AddMinutes(-15),
-                    holdings = new[]
+                    InvestmentId = "INV003",
+                    AccountNumber = "****INV789",
+                    PortfolioName = "Starter Portfolio",
+                    TotalValue = 12750.25m,
+                    TotalInvested = 10500.00m,
+                    TotalGain = 2250.25m,
+                    GainPercentage = 21.43m,
+                    LastUpdated = DateTime.UtcNow.AddMinutes(-15),
+                    Holdings = new[]
                     {
-                        new { symbol = "SPY", name = "SPDR S&P 500 ETF", shares = 25, currentPrice = 445.50m, value = 11137.50m },
-                        new { symbol = "VTI", name = "Vanguard Total Stock Market ETF", shares = 15, currentPrice = 107.52m, value = 1612.80m }
+                        new HoldingInfo { Symbol = "SPY", Name = "SPDR S&P 500 ETF", Shares = 25, CurrentPrice = 445.50m, Value = 11137.50m },
+                        new HoldingInfo { Symbol = "VTI", Name = "Vanguard Total Stock Market ETF", Shares = 15, CurrentPrice = 107.52m, Value = 1612.80m }
                     }
                 }
             },
-            ["demo"] = new object[]
+            ["demo"] = new InvestmentInfo[]
             {
-                new
+                new InvestmentInfo
                 {
-                    investmentId = "DEMO_INV001",
-                    accountNumber = "****DEMO000",
-                    portfolioName = "Demo Portfolio",
-                    totalValue = 1050.00m,
-                    totalInvested = 1000.00m,
-                    totalGain = 50.00m,
-                    gainPercentage = 5.00m,
-                    lastUpdated = DateTime.UtcNow.AddMinutes(-5),
-                    holdings = new[]
+                    InvestmentId = "DEMO_INV001",
+                    AccountNumber = "****DEMO000",
+                    PortfolioName = "Demo Portfolio",
+                    TotalValue = 1050.00m,
+                    TotalInvested = 1000.00m,
+                    TotalGain = 50.00m,
+                    GainPercentage = 5.00m,
+                    LastUpdated = DateTime.UtcNow.AddMinutes(-5),
+                    Holdings = new[]
                     {
-                        new { symbol = "DEMO", name = "Demo Stock", shares = 10, currentPrice = 105.00m, value = 1050.00m }
+                        new HoldingInfo { Symbol = "DEMO", Name = "Demo Stock", Shares = 10, CurrentPrice = 105.00m, Value = 1050.00m }
                     }
                 }
             }
         };
 
-        return new { investments = investmentsData.GetValueOrDefault(userName, investmentsData["demo"]) };
+        return new InvestmentsResponse { Investments = investmentsData.GetValueOrDefault(userName, investmentsData["demo"]) };
     }
 }

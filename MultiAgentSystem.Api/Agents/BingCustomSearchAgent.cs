@@ -5,18 +5,18 @@ using System.Text.Json;
 
 namespace MultiAgentSystem.Api.Agents;
 
-public interface ICustomRAGAgent
+public interface IBingCustomSearchAgent
 {
     Task<string> QueryAsync(string query, CancellationToken cancellationToken = default);
 }
 
-public class CustomRAGAgent : ICustomRAGAgent
+public class BingCustomSearchAgent : IBingCustomSearchAgent
 {
     private readonly IConfiguration _configuration;
-    private readonly ILogger<CustomRAGAgent> _logger;
+    private readonly ILogger<BingCustomSearchAgent> _logger;
     private readonly HttpClient _httpClient;
 
-    public CustomRAGAgent(IConfiguration configuration, ILogger<CustomRAGAgent> logger)
+    public BingCustomSearchAgent(IConfiguration configuration, ILogger<BingCustomSearchAgent> logger)
     {
         _configuration = configuration;
         _logger = logger;
@@ -25,33 +25,32 @@ public class CustomRAGAgent : ICustomRAGAgent
 
     public async Task<string> QueryAsync(string query, CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Custom RAG Agent processing query: {Query}", query);
+        _logger.LogInformation("Bing Custom Search Agent processing query: {Query}", query);
 
         try
         {
             // Check if AI Foundry configuration is available
-            var projectEndpoint = _configuration["AIFoundry:ProjectEndpoint"];
-            var apiKey = _configuration["AIFoundry:ApiKey"];
+            var endpoint = _configuration["AIFoundry:ProjectEndpoint"];
             var agentName = _configuration["AIFoundry:AgentName"];
 
-            if (string.IsNullOrEmpty(projectEndpoint) || string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(agentName))
+            if (string.IsNullOrEmpty(endpoint) || string.IsNullOrEmpty(agentName))
             {
                 return await GetDummyResponseAsync(query);
             }
 
             // Call the existing agent in AI Foundry
-            var agentResponse = await CallAIFoundryAgentAsync(query, projectEndpoint, apiKey, agentName, cancellationToken);
+            var agentResponse = await CallAIFoundryAgentAsync(query, endpoint, agentName, cancellationToken);
 
             return $"{agentResponse}";
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error in Custom RAG Agent. Falling back to dummy response.");
+            _logger.LogError(ex, "Error in Bing Custom Search Agent. Falling back to dummy response.");
             return await GetDummyResponseAsync(query);
         }
     }
 
-    private async Task<string> CallAIFoundryAgentAsync(string query, string projectEndpoint, string apiKey, string agentName, CancellationToken cancellationToken)
+    private async Task<string> CallAIFoundryAgentAsync(string query, string endpoint, string agentName, CancellationToken cancellationToken)
     {
         try
         {
@@ -63,7 +62,7 @@ public class CustomRAGAgent : ICustomRAGAgent
                 return "Configuration Error: AssistantId not found. Please configure your AI Foundry Assistant ID.";
             }
 
-            PersistentAgentsClient agentClient = new(projectEndpoint, new DefaultAzureCredential());
+            PersistentAgentsClient agentClient = new(endpoint, new DefaultAzureCredential());
 
             PersistentAgent agent = await agentClient.Administration.GetAgentAsync(assistantId);
 

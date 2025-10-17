@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import authService from '../services/authService';
 import './LoginModal.css';
+import nabIcon from '../assets/nab-icon.png';
 
 function LoginModal({ onClose, onLoginSuccess }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [demoUsers, setDemoUsers] = useState([]);
@@ -41,20 +43,24 @@ function LoginModal({ onClose, onLoginSuccess }) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="close-btn" onClick={onClose}>×</button>
+        
         <div className="modal-header">
-          <h2>Login to Your Account</h2>
-          <button className="close-btn" onClick={onClose}>×</button>
+          <div className="header-title">
+            <img src={nabIcon} alt="NAB" className="nab-icon" />
+            <h1>NAB Internet Banking</h1>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">NAB ID</label>
             <input
               id="username"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter username"
+              placeholder=""
               required
             />
           </div>
@@ -66,45 +72,40 @@ function LoginModal({ onClose, onLoginSuccess }) {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
+              placeholder=""
               required
             />
           </div>
+
+          <div className="remember-me">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            <label htmlFor="rememberMe">Remember my NAB ID</label>
+          </div>
+
+          <p className="security-notice">
+            For security reasons, we'll only show you the last 3 digits. Don't save your NAB ID if anyone else uses this browser.
+          </p>
 
           {error && <div className="error-message">{error}</div>}
 
           <button type="submit" className="btn btn-primary" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
           </button>
-        </form>
 
-        {demoUsers.length > 0 && (
-          <div className="demo-users">
-            <div className="divider">
-              <span>Demo Accounts</span>
-            </div>
-            <p className="demo-hint">Click to auto-fill credentials:</p>
-            <div className="demo-users-list">
-              {demoUsers.map((user) => (
-                <div
-                  key={user.username}
-                  className="demo-user-card"
-                  onClick={() => handleDemoLogin(user.username, user.password)}
-                >
-                  <div className="demo-user-header">
-                    <span className="demo-user-icon">👤</span>
-                    <strong>{user.username}</strong>
-                  </div>
-                  <p className="demo-user-desc">{user.description}</p>
-                  <div className="demo-credentials">
-                    <code>User: {user.username}</code>
-                    <code>Pass: {user.password}</code>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="login-links">
+            <a href="#" className="forgot-link">Forgot your NAB ID or password?</a>
           </div>
-        )}
+
+          <div className="register-section">
+            <span>New to NAB Internet Banking? </span>
+            <a href="#" className="register-link">Register now</a>
+          </div>
+        </form>        
       </div>
     </div>
   );

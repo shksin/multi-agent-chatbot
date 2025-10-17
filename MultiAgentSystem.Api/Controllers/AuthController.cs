@@ -54,9 +54,7 @@ public class AuthController : ControllerBase
         {
             users = new[]
             {
-                new { username = "admin", password = "password123", description = "Administrator account with full access" },
-                new { username = "user1", password = "pass123", description = "Standard user account" },
-                new { username = "demo", password = "demo123", description = "Demo/trial account" }
+                new { username = "demo", password = "demo123", description = "Demo account" }
             }
         });
     }
