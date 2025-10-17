@@ -3,6 +3,8 @@ import './App.css';
 import ChatInterface from './components/ChatInterface';
 import LoginModal from './components/LoginModal';
 import authService from './services/authService';
+import nabLogo from './assets/nab-logo.svg';
+import nabIcon from './assets/nab-icon.png';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -50,8 +52,7 @@ function App() {
       <header className="nav-header">
         <div className="nav-content">
           <div className="logo">
-            <span className="logo-icon">🏦</span>
-            <span className="logo-text">Smart Banking</span>
+            <img src={nabLogo} alt="NAB" className="logo-img" />
           </div>
           <nav className="nav-menu">
             <a href="#" className="nav-item active">Personal</a>
@@ -83,7 +84,7 @@ function App() {
         <div className="hero-content">
           <div className="hero-card">
             <h1>2025 Cyber Month</h1>
-            <p>Building Smart Banking's cyber safe culture</p>
+            <p>Building a cyber safe culture</p>
             <button className="explore-btn">Explore Cyber Month</button>
           </div>
         </div>
@@ -145,9 +146,11 @@ function App() {
           <div className="chatbot-container">
             <div className="chatbot-header">
               <div className="chatbot-info">
-                <div className="chatbot-avatar">🤖</div>
+                <div className="chatbot-avatar">
+                  <img src={nabIcon} alt="NAB" className="avatar-img" />
+                </div>
                 <div>
-                  <div className="chatbot-name">Smart Assistant</div>
+                  <div className="chatbot-name">NAB</div>
                   <div className="chatbot-status">Message us 24/7</div>
                 </div>
               </div>
@@ -167,12 +170,18 @@ function App() {
             className="chatbot-trigger" 
             onClick={() => setShowChatbot(true)}
           >
-            <div className="chatbot-trigger-avatar">🤖</div>
-            <div className="chatbot-trigger-text">
-              <div className="chatbot-trigger-name">Smart Assistant</div>
-              <div className="chatbot-trigger-message">Message us 24/7</div>
+            <div className="chatbot-trigger-avatar">
+              <img src={nabIcon} alt="NAB" className="avatar-img" />
             </div>
-            <div className="chatbot-trigger-dots">•••</div>
+            <div className="chatbot-trigger-text">
+              <div className="chatbot-trigger-name">NAB Virtual Assistant</div>
+              <div className="chatbot-trigger-message">Hi, I'm here to help if you have any questions.</div>
+            </div>
+            <div className="chatbot-trigger-icon">
+              <div className="chat-bubble">
+                <div className="chat-dots">•••</div>
+              </div>
+            </div>
           </button>
         )}
       </div>

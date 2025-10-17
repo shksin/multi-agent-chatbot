@@ -9,15 +9,21 @@ public class OrchestratorAgent : IOrchestratorAgent
 {
     private readonly IRagAgent _ragAgent;
     private readonly IUserAgent _userAgent;
+    private readonly ICustomRAGAgent _customRAGAgent;
+    private readonly IConfiguration _configuration;
     private readonly ILogger<OrchestratorAgent> _logger;
 
     public OrchestratorAgent(
         IRagAgent ragAgent,
         IUserAgent userAgent,
+        ICustomRAGAgent customRAGAgent,
+        IConfiguration configuration,
         ILogger<OrchestratorAgent> logger)
     {
         _ragAgent = ragAgent;
         _userAgent = userAgent;
+        _customRAGAgent = customRAGAgent;
+        _configuration = configuration;
         _logger = logger;
     }
 
@@ -38,7 +44,14 @@ public class OrchestratorAgent : IOrchestratorAgent
 
         try
         {
-            // Priority-based logic: Try User Agent first if authenticated, fallback to RAG Agent
+            // Get the search configuration to determine which search agent to use
+            var searchConfig = _configuration["SearchType"] ?? "SearchIndex";
+            bool useCustomRAG = searchConfig.Equals("BingCustom", StringComparison.OrdinalIgnoreCase);
+            
+            _logger.LogInformation("Search configuration: {SearchConfig}, Using Custom RAG: {UseCustomRAG}", 
+                searchConfig, useCustomRAG);
+            
+            // Priority-based logic: Try User Agent first if authenticated, then use configured search agent
             if (!string.IsNullOrEmpty(authToken))
             {
                 _logger.LogInformation("User is authenticated, trying User Agent first");
@@ -53,66 +66,130 @@ public class OrchestratorAgent : IOrchestratorAgent
                         response.AgentsCalled.Add("User Agent");
                         _logger.LogInformation("User Agent handled the query successfully");
                         
-                        // User Agent provided a valid response, no need to call RAG Agent
+                        // User Agent provided a valid response, no need to call other agents
                         response.RagResult = null;
+                        response.CustomRAGResult = null;
                     }
                     else
                     {
-                        _logger.LogInformation("User Agent cannot handle this query, falling back to RAG Agent");
+                        _logger.LogInformation("User Agent cannot handle this query, using configured search agent");
                         response.UserResult = null;
                         
-                        // Fallback to RAG Agent
-                        try
+                        // Use configured search agent
+                        if (useCustomRAG)
                         {
-                            response.RagResult = await _ragAgent.QueryAsync(query, cancellationToken);
-                            response.AgentsCalled.Add("RAG Agent");
-                            _logger.LogInformation("RAG Agent completed successfully as fallback");
+                            try
+                            {
+                                response.CustomRAGResult = await _customRAGAgent.QueryAsync(query, cancellationToken);
+                                response.AgentsCalled.Add("Custom RAG Agent");
+                                _logger.LogInformation("Custom RAG Agent completed successfully");
+                                response.RagResult = null;
+                            }
+                            catch (Exception customRagEx)
+                            {
+                                _logger.LogError(customRagEx, "Custom RAG Agent failed");
+                                response.CustomRAGResult = null;
+                                response.Errors.Add($"Custom RAG Agent: {customRagEx.Message}");
+                                response.RagResult = "**Custom RAG Agent Error:** Unable to retrieve information from AI Foundry.";
+                            }
                         }
-                        catch (Exception ragEx)
+                        else
                         {
-                            _logger.LogError(ragEx, "RAG Agent fallback failed");
-                            response.RagResult = "**RAG Agent Error:** Unable to retrieve knowledge base information.";
-                            response.Errors.Add($"RAG Agent: {ragEx.Message}");
+                            try
+                            {
+                                response.RagResult = await _ragAgent.QueryAsync(query, cancellationToken);
+                                response.AgentsCalled.Add("RAG Agent");
+                                _logger.LogInformation("RAG Agent completed successfully");
+                                response.CustomRAGResult = null;
+                            }
+                            catch (Exception ragEx)
+                            {
+                                _logger.LogError(ragEx, "RAG Agent failed");
+                                response.RagResult = "**RAG Agent Error:** Unable to retrieve knowledge base information.";
+                                response.Errors.Add($"RAG Agent: {ragEx.Message}");
+                            }
                         }
                     }
                 }
                 catch (Exception userEx)
                 {
-                    _logger.LogError(userEx, "User Agent failed, falling back to RAG Agent");
+                    _logger.LogError(userEx, "User Agent failed, using configured search agent");
                     response.UserResult = null;
                     response.Errors.Add($"User Agent: {userEx.Message}");
                     
-                    // Fallback to RAG Agent
-                    try
+                    // Use configured search agent as fallback
+                    if (useCustomRAG)
                     {
-                        response.RagResult = await _ragAgent.QueryAsync(query, cancellationToken);
-                        response.AgentsCalled.Add("RAG Agent");
-                        _logger.LogInformation("RAG Agent completed successfully as fallback after User Agent error");
+                        try
+                        {
+                            response.CustomRAGResult = await _customRAGAgent.QueryAsync(query, cancellationToken);
+                            response.AgentsCalled.Add("Custom RAG Agent");
+                            _logger.LogInformation("Custom RAG Agent completed successfully as fallback after User Agent error");
+                            response.RagResult = null;
+                        }
+                        catch (Exception customRagEx)
+                        {
+                            _logger.LogError(customRagEx, "Custom RAG Agent fallback also failed");
+                            response.CustomRAGResult = null;
+                            response.Errors.Add($"Custom RAG Agent: {customRagEx.Message}");
+                            response.RagResult = "**Custom RAG Agent Error:** Unable to retrieve information from AI Foundry.";
+                        }
                     }
-                    catch (Exception ragEx)
+                    else
                     {
-                        _logger.LogError(ragEx, "RAG Agent fallback also failed");
-                        response.RagResult = "**RAG Agent Error:** Unable to retrieve knowledge base information.";
-                        response.Errors.Add($"RAG Agent: {ragEx.Message}");
+                        try
+                        {
+                            response.RagResult = await _ragAgent.QueryAsync(query, cancellationToken);
+                            response.AgentsCalled.Add("RAG Agent");
+                            _logger.LogInformation("RAG Agent completed successfully as fallback after User Agent error");
+                            response.CustomRAGResult = null;
+                        }
+                        catch (Exception ragEx)
+                        {
+                            _logger.LogError(ragEx, "RAG Agent fallback also failed");
+                            response.RagResult = "**RAG Agent Error:** Unable to retrieve knowledge base information.";
+                            response.Errors.Add($"RAG Agent: {ragEx.Message}");
+                        }
                     }
                 }
             }
             else
             {
-                _logger.LogInformation("No auth token provided, using RAG Agent only");
+                _logger.LogInformation("No auth token provided, using configured search agent: {SearchConfig}", searchConfig);
                 
-                // No authentication, use RAG Agent only
-                try
+                // No authentication, use configured search agent
+                if (useCustomRAG)
                 {
-                    response.RagResult = await _ragAgent.QueryAsync(query, cancellationToken);
-                    response.AgentsCalled.Add("RAG Agent");
-                    _logger.LogInformation("RAG Agent completed successfully");
+                    try
+                    {
+                        response.CustomRAGResult = await _customRAGAgent.QueryAsync(query, cancellationToken);
+                        response.AgentsCalled.Add("Custom RAG Agent");
+                        _logger.LogInformation("Custom RAG Agent completed successfully");
+                        response.RagResult = null;
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Custom RAG Agent failed");
+                        response.CustomRAGResult = null;
+                        response.Errors.Add($"Custom RAG Agent: {ex.Message}");
+                        response.RagResult = "**Custom RAG Agent Error:** Unable to retrieve information from AI Foundry.";
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    _logger.LogError(ex, "RAG Agent failed");
-                    response.RagResult = "**RAG Agent Error:** Unable to retrieve knowledge base information.";
-                    response.Errors.Add($"RAG Agent: {ex.Message}");
+                    try
+                    {
+                        response.RagResult = await _ragAgent.QueryAsync(query, cancellationToken);
+                        response.AgentsCalled.Add("RAG Agent");
+                        _logger.LogInformation("RAG Agent completed successfully");
+                        response.CustomRAGResult = null;
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "RAG Agent failed");
+                        response.RagResult = "**RAG Agent Error:** Unable to retrieve knowledge base information.";
+                        response.Errors.Add($"RAG Agent: {ex.Message}");
+                    }
                 }
                 
                 response.UserResult = null;
@@ -140,21 +217,27 @@ public class OrchestratorAgent : IOrchestratorAgent
         // Determine which agent provided the primary response
         bool userAgentProvided = !string.IsNullOrEmpty(response.UserResult);
         bool ragAgentProvided = !string.IsNullOrEmpty(response.RagResult);
+        bool customRAGProvided = !string.IsNullOrEmpty(response.CustomRAGResult);
 
-        // Add the main response (either from User Agent or RAG Agent)
+        // Add the main response (priority: User > Custom RAG > Standard RAG)
         if (userAgentProvided)
         {
             // User Agent provided the response
             parts.Add(response.UserResult!);
         }
+        else if (customRAGProvided)
+        {
+            // Custom RAG Agent provided the response
+            parts.Add(response.CustomRAGResult!);
+        }
         else if (ragAgentProvided)
         {
-            // RAG Agent provided the response
+            // Standard RAG Agent provided the response
             parts.Add(response.RagResult!);
         }
         else
         {
-            // Fallback message if neither agent provided a response
+            // Fallback message if no agent provided a response
             parts.Add("I apologize, but I couldn't retrieve information for your query at this time. Please try again or contact support for assistance.");
         }
 
@@ -169,13 +252,24 @@ public class OrchestratorAgent : IOrchestratorAgent
             {
                 parts.Add($"*Personalized response from your banking data*");
             }
-            else if (response.HasAuthToken && ragAgentProvided)
+            else if (customRAGProvided)
             {
-                parts.Add($"*General information from our knowledge base (no personal data available for this query)*");
+                parts.Add($"*Response from AI Foundry agent (Search: BingCustom)*");
+            }
+            else if (ragAgentProvided)
+            {
+                if (response.HasAuthToken)
+                {
+                    parts.Add($"*General information from search index (no personal data available for this query)*");
+                }
+                else
+                {
+                    parts.Add($"*Information from search index (Search: SearchIndex)*");
+                }
             }
             else
             {
-                parts.Add($"*Information from our knowledge base*");
+                parts.Add($"*Information from configured search provider*");
             }
             
             parts.Add($"*Generated by: {string.Join(", ", response.AgentsCalled)}*");
@@ -199,6 +293,7 @@ public class OrchestratorResponse
     public List<string> AgentsCalled { get; set; } = new();
     public string? RagResult { get; set; }
     public string? UserResult { get; set; }
+    public string? CustomRAGResult { get; set; }
     public string SynthesizedResponse { get; set; } = string.Empty;
     public bool Success { get; set; }
     public List<string> Errors { get; set; } = new();

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import chatService from '../services/chatService';
 import './ChatInterface.css';
+import nabIcon from '../assets/nab-red-icon.jpg';
 
 function ChatInterface({ authToken, isLoggedIn }) {
   const [messages, setMessages] = useState([
@@ -107,7 +108,7 @@ function ChatInterface({ authToken, isLoggedIn }) {
               <div className="message-content">
                 <div className="message-header">
                   <span className="message-icon">
-                    {message.type === 'user' ? '👤' : '🤖'}
+                    {message.type === 'user' ? '👤' : <img src={nabIcon} alt="NAB" className="message-icon-img" />}
                   </span>
                   <span className="message-time">
                     {message.timestamp.toLocaleTimeString()}
@@ -134,7 +135,9 @@ function ChatInterface({ authToken, isLoggedIn }) {
             <div className="message bot">
               <div className="message-content">
                 <div className="message-header">
-                  <span className="message-icon">🤖</span>
+                  <span className="message-icon">
+                    <img src={nabIcon} alt="NAB" className="message-icon-img" />
+                  </span>
                   <span className="message-time">Processing...</span>
                 </div>
                 <div className="typing-indicator">
@@ -181,7 +184,7 @@ function ChatInterface({ authToken, isLoggedIn }) {
             disabled={isLoading || !inputMessage.trim()}
             className="send-button"
           >
-            {isLoading ? '⏳' : '📤'}
+            {isLoading ? '⏳' : 'Send'}
           </button>
         </form>
       </div>

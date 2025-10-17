@@ -83,6 +83,13 @@
   font-size: 1.2rem;
 }
 
+.message-icon-img {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
 .message-time {
   font-size: 0.75rem;
 }
@@ -253,22 +260,24 @@
 }
 
 .send-button {
-  background: #e53e3e;
-  color: white;
+  /* background: #e53e3e; */
+  color: grey;
   border: none;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif
 }
 
 .send-button:hover:not(:disabled) {
-  background: #c53030;
+  /* background: #c53030; */
   transform: scale(1.05);
 }
 
@@ -294,4 +303,12 @@
   .suggested-questions {
     padding: 1rem;
   }
+}
+
+/* Send Icon Styles */
+.send-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  /*filter: brightness(0) invert(1); /* Makes the icon white */
 }

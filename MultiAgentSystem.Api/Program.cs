@@ -50,6 +50,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<IRagAgent, RagAgent>();
 builder.Services.AddSingleton<IUserAgent, UserAgent>();
+builder.Services.AddSingleton<ICustomRAGAgent, CustomRAGAgent>();
 builder.Services.AddSingleton<IOrchestratorAgent, OrchestratorAgent>();
 
 var app = builder.Build();

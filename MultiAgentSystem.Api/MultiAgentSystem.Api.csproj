@@ -12,6 +12,9 @@
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.24.1" />
     <PackageReference Include="Microsoft.SemanticKernel.Agents.Core" Version="1.24.1-alpha" />
     <PackageReference Include="Microsoft.SemanticKernel.Agents.Abstractions" Version="1.24.1-alpha" />
+    <PackageReference Include="Azure.AI.Projects" Version="1.0.0-beta.2" />
+    <PackageReference Include="Azure.AI.Inference" Version="1.0.0-beta.2" />
+    <PackageReference Include="Azure.Identity" Version="1.12.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.0" />
   </ItemGroup>
