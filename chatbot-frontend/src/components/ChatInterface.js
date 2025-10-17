@@ -9,8 +9,7 @@ function ChatInterface({ authToken, isLoggedIn }) {
     {
       id: 1,
       type: 'bot',
-      text: "👋 Hello! I'm your multi-agent assistant. I can help you with information from our knowledge base" + 
-            (isLoggedIn ? " and your personal account data." : ". Login to access personalized information!"),
+      text: "Hi there, I'm NAB's smart virtual assistant. I can answer general banking questions here. Login to ask information about your NAB account!",
       timestamp: new Date(),
       agents: []
     }
@@ -32,8 +31,7 @@ function ChatInterface({ authToken, isLoggedIn }) {
     setMessages(prev => [{
       id: 1,
       type: 'bot',
-      text: "👋 Hello! I'm your multi-agent assistant. I can help you with information from our knowledge base" + 
-            (isLoggedIn ? " and your personal account data." : ". Login to access personalized information!"),
+      text: "Hi there, I'm NAB's smart virtual assistant. I can answer general banking questions here. Login to ask information about your NAB account!",
       timestamp: new Date(),
       agents: []
     }]);
@@ -85,18 +83,6 @@ function ChatInterface({ authToken, isLoggedIn }) {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const suggestedQuestions = [
-    "Tell me about your products",
-    "What support options are available?",
-    "Show me my account information",
-    "What's my recent activity?",
-    "Display my usage statistics"
-  ];
-
-  const handleSuggestedQuestion = (question) => {
-    setInputMessage(question);
   };
 
   return (
@@ -151,24 +137,6 @@ function ChatInterface({ authToken, isLoggedIn }) {
           
           <div ref={messagesEndRef} />
         </div>
-
-        {messages.length === 1 && (
-          <div className="suggested-questions">
-            <p className="suggestions-title">Try asking:</p>
-            <div className="suggestions-list">
-              {suggestedQuestions.map((question, idx) => (
-                <button
-                  key={idx}
-                  className="suggestion-btn"
-                  onClick={() => handleSuggestedQuestion(question)}
-                  disabled={isLoading}
-                >
-                  {question}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
 
         <form onSubmit={handleSendMessage} className="input-container">
           <input
