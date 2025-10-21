@@ -39,7 +39,7 @@ Update `appsettings.json` with your Azure Search credentials (optional) or BingS
   }
 ```
 
-How to configure Grounding wih Bing Custom Search:  [Grounding with Bing Custom Search](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/bing-custom-search)
+*Steps to configure Grounding with Bing Custom Search: [Grounding with Bing Custom Search](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/bing-custom-search)*
 
 Update `appsettings.json` with your AzureOpenAI configurations:
 ```json
