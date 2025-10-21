@@ -46,12 +46,28 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Register HttpClient with optimized configuration
+builder.Services.AddHttpClient<IUserAgent, UserAgent>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:58550");
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
+builder.Services.AddHttpClient<IBingCustomSearchAgent, BingCustomSearchAgent>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
 // Register services
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<IAISearchAgent, AISearchAgent>();
-builder.Services.AddSingleton<IUserAgent, UserAgent>();
-builder.Services.AddSingleton<IBingCustomSearchAgent, BingCustomSearchAgent>();
-builder.Services.AddSingleton<IOrchestratorAgent, OrchestratorAgent>();
+builder.Services.AddSingleton<MultiAgentSystem.Api.Services.IAIFoundryConnectionPool, MultiAgentSystem.Api.Services.AIFoundryConnectionPool>();
+builder.Services.AddScoped<IUserAgent, UserAgent>();
+builder.Services.AddScoped<IBingCustomSearchAgent, BingCustomSearchAgent>();
+builder.Services.AddScoped<IOrchestratorAgent, OrchestratorAgent>();
+
+// Register background services
+builder.Services.AddHostedService<MultiAgentSystem.Api.Services.AgentPreloadService>();
 
 var app = builder.Build();
 

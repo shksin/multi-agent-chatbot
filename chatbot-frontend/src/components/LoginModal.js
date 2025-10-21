@@ -52,7 +52,7 @@ function LoginModal({ onClose, onLoginSuccess }) {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleSubmit} className="login-form" autoComplete="off">
           <div className="form-group">
             <label htmlFor="username">NAB ID</label>
             <input
@@ -62,6 +62,10 @@ function LoginModal({ onClose, onLoginSuccess }) {
               onChange={(e) => setUsername(e.target.value)}
               placeholder=""
               required
+              autoComplete="new-password"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
           </div>
 
@@ -74,6 +78,10 @@ function LoginModal({ onClose, onLoginSuccess }) {
               onChange={(e) => setPassword(e.target.value)}
               placeholder=""
               required
+              autoComplete="new-password"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
           </div>
 

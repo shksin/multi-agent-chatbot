@@ -15,16 +15,23 @@ public class UserAgent : IUserAgent
     private readonly IConfiguration _configuration;
     private readonly ILogger<UserAgent> _logger;
     private readonly HttpClient _httpClient;
+    private static readonly Dictionary<string, (string Response, DateTime Expiry)> _cache = new();
+    private static readonly object _cacheLock = new object();
 
-    public UserAgent(IConfiguration configuration, ILogger<UserAgent> logger)
+    public UserAgent(IConfiguration configuration, ILogger<UserAgent> logger, HttpClient httpClient)
     {
         _configuration = configuration;
         _logger = logger;
-        _httpClient = new HttpClient
+        _httpClient = httpClient;
+        
+        // Configure HttpClient if not already configured
+        if (_httpClient.BaseAddress == null)
         {
-            BaseAddress = new Uri("https://localhost:58550"),
-            Timeout = TimeSpan.FromSeconds(30)
-        };
+            _httpClient.BaseAddress = new Uri("https://localhost:58550");
+        }
+        
+        var timeoutSeconds = _configuration.GetValue<int>("HttpClient:TimeoutSeconds", 30);
+        _httpClient.Timeout = TimeSpan.FromSeconds(timeoutSeconds);
     }
 
     public async Task<string> QueryAsync(string query, string authToken, CancellationToken cancellationToken = default)
@@ -113,12 +120,39 @@ public class UserAgent : IUserAgent
     {
         try
         {
+            // Create cache key from endpoint and auth token (last 8 chars for security)
+            var cacheKey = $"{endpoint}_{authToken.Substring(Math.Max(0, authToken.Length - 8))}";
+            
+            // Check cache first (5-minute expiry)
+            lock (_cacheLock)
+            {
+                if (_cache.TryGetValue(cacheKey, out var cached) && cached.Expiry > DateTime.UtcNow)
+                {
+                    _logger.LogDebug("Returning cached response for endpoint: {Endpoint}", endpoint);
+                    return cached.Response;
+                }
+            }
+            
             _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
             
             var response = await _httpClient.GetStringAsync(endpoint);
+            var formattedResponse = formatter(response);
             
-            return formatter(response);
+            // Cache the formatted response
+            lock (_cacheLock)
+            {
+                _cache[cacheKey] = (formattedResponse, DateTime.UtcNow.AddMinutes(5));
+                
+                // Clean up expired entries (simple cleanup)
+                var expiredKeys = _cache.Where(kvp => kvp.Value.Expiry <= DateTime.UtcNow).Select(kvp => kvp.Key).ToList();
+                foreach (var key in expiredKeys)
+                {
+                    _cache.Remove(key);
+                }
+            }
+            
+            return formattedResponse;
         }
         catch (Exception ex)
         {

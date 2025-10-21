@@ -243,7 +243,7 @@ public class OrchestratorAgent : IOrchestratorAgent
             }
 
             // Synthesize the final response
-            response.SynthesizedResponse = SynthesizeResponse(response);
+            response.SynthesizedResponse = await SynthesizeResponseAsync(response);
             response.Success = true;
         }
         catch (Exception ex)
@@ -257,7 +257,7 @@ public class OrchestratorAgent : IOrchestratorAgent
         return response;
     }
 
-    private string SynthesizeResponse(OrchestratorResponse response)
+    private async Task<string> SynthesizeResponseAsync(OrchestratorResponse response)
     {
         var parts = new List<string>();
 
@@ -292,13 +292,13 @@ public class OrchestratorAgent : IOrchestratorAgent
             return string.Join("\n", parts);
         }
 
-        // Apply Azure OpenAI summarization if enabled
+        // Apply Azure OpenAI summarization if enabled (async)
         string finalResponse = rawResponse;
         if (_summarizationEnabled && _chatClient != null && !string.IsNullOrEmpty(rawResponse))
         {
             try
             {
-                finalResponse = SummarizeWithAzureOpenAI(response.Query, rawResponse, agentType).GetAwaiter().GetResult();
+                finalResponse = await SummarizeWithAzureOpenAI(response.Query, rawResponse, agentType);
                 _logger.LogInformation("Successfully summarized response using Azure OpenAI");
             }
             catch (Exception ex)
@@ -373,8 +373,15 @@ Ensure proper spacing and structure for maximum readability.";
                 PresencePenalty = (float)0.2 // Reduce repetition
             };
 
-            // Create the chat completion request
-            ChatCompletion completion = await _chatClient.CompleteChatAsync(messages, options);
+            // Create cancellation token for timeout
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10)); // 10 second timeout for AI calls
+            var combinedCancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
+                cts.Token, 
+                CancellationToken.None
+            ).Token;
+
+            // Create the chat completion request with timeout
+            ChatCompletion completion = await _chatClient.CompleteChatAsync(messages, options, combinedCancellationToken);
 
             // Extract the actual text content from the response
             if (completion != null && completion.Content != null && completion.Content.Count > 0)

@@ -138,7 +138,7 @@ function ChatInterface({ authToken, isLoggedIn }) {
           <div ref={messagesEndRef} />
         </div>
 
-        <form onSubmit={handleSendMessage} className="input-container">
+        <form onSubmit={handleSendMessage} className="input-container" autoComplete="off">
           <input
             type="text"
             value={inputMessage}
@@ -146,6 +146,10 @@ function ChatInterface({ authToken, isLoggedIn }) {
             placeholder="Type your message here..."
             disabled={isLoading}
             className="message-input"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck="false"
           />
           <button
             type="submit"
